@@ -13,4 +13,6 @@ public class ManentController {
     }
     @GetMapping("index")
     public String index(){ return "index"; }
+    @GetMapping("deskMain")
+    public String deskMain(){ return "deskMain"; }
 }
