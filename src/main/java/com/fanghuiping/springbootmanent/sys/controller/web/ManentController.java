@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ManentController {
     @GetMapping("login")
     public String login(){
-        return "login";
+        return "system/index/login";
     }
     @GetMapping("index")
-    public String index(){ return "index"; }
+    public String index(){ return "system/index/index"; }
     @GetMapping("deskMain")
-    public String deskMain(){ return "deskMain"; }
+    public String deskMain(){ return "system/index/deskMain"; }
+    @GetMapping("toLogLoginManager")
+    public String toLogLoginManager(){return "system/loginfo/loginfoManager"; }
 }
