@@ -11,8 +11,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/resource/layui/css/layui.css" media="all" />
-    <link rel="stylesheet" href="/resource/css/public.css" media="all" />
+    <link rel="stylesheet" href="/resource/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" href="/resource/css/public.css" media="all"/>
 </head>
 <body class="childrenBody">
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
@@ -22,57 +22,45 @@
     <div class="layui-inline">
         <label class="layui-form-label">登陆名：</label>
         <div class="layui-input-inline">
-            <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            <input type="text" name="loginname" placeholder="登录名" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-inline">
         <label class="layui-form-label">ip地址：</label>
         <div class="layui-input-inline">
-            <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            <input type="text" name="limit" placeholder="登陆地址" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-inline">
         <label class="layui-form-label">开始时间：</label>
         <div class="layui-input-inline">
-            <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+            <input type="text" name="startTime" id="date" lay-verify="date1" readonly="readonly"
+                   placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input">
         </div>
     </div>
 
-    <div class="layui-form-item layui-inline">
+    <div class="layui-inline">
         <label class="layui-form-label">结束时间：</label>
         <div class="layui-input-inline">
-            <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+            <input type="text" name="endTime" id="date1" lay-verify="date1" readonly="readonly"
+                   placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-inline layui-form-item">
         <div class="layui-input-block">
-            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button type="button" class="layui-btn" lay-submit="" lay-filter="doSearch"><span
+                    class="layui-icon layui-icon-search"></span>查询
+            </button>
+            <button type="reset" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-refresh-1"></span>重置
+            </button>
         </div>
     </div>
 </form>
-<table class="layui-table" lay-data="{width: 1656, height:330, url:'/demo/table/user/', page:true, id:'idTest'}" lay-filter="demo">
-    <thead>
-    <tr>
-        <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
-        <th lay-data="{field:'id', width:80, sort: true, fixed: true}">ID</th>
-        <th lay-data="{field:'username', width:80}">用户名</th>
-        <th lay-data="{field:'sex', width:80, sort: true}">性别</th>
-        <th lay-data="{field:'city', width:80}">城市</th>
-        <th lay-data="{field:'sign', width:160}">签名</th>
-        <th lay-data="{field:'experience', width:80, sort: true}">积分</th>
 
-        <th lay-data="{field:'classify', width:80}">职业</th>
-        <th lay-data="{field:'wealth', width:135, sort: true}">财富</th>
-        <th lay-data="{field:'score', width:80, sort: true, fixed: 'right'}">评分</th>
-        <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}"></th>
-    </tr>
-    </thead>
-</table>
-<div id="demo7"></div>
+<table class="layui-hide" id="test" lay-filter="test"></table>
 
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
@@ -81,222 +69,99 @@
 </script>
 <script type="text/javascript" src="/resource/layui/layui.js"></script>
 <script>
-    // 表格
-    layui.use('table', function(){
+    layui.use(['jquery', 'form', 'table', 'layer', 'laydate'], function () {
+        var $ = layui.jquery;
+        var form = layui.form;
         var table = layui.table;
-        //监听表格复选框选择
-        table.on('checkbox(demo)', function(obj){
-            console.log(obj)
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+
+        var str = table.render({
+            elem: '#test'
+            , url: 'login/loadALLLogin'
+            , toolbar: true
+            , title: '用户登录日志数据表'
+            , totalRow: true
+            , cols: [ [
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                , {field: 'loginname', title: '登陆名'}
+                , {field: 'loginip', title: '登录地址', sort: true}
+                , {field: 'logintime', title: '登录时间'}
+                , {fixed: 'right', align: 'center', toolbar: '#barDemo'}
+            ] ]
+            , page: true
+            , response: {
+                statusCode: 0 //重新规定成功的状态码为 200，table 组件默认为 0
+            }
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                console.log("什么情况")
+                console.log(res.data);
+                return {
+                    "code": res.status, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.total, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
         });
-        //监听工具条
-        table.on('tool(demo)', function(obj){
+
+        //初始化时间选择器
+        laydate.render({
+            elem: '#date',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#date1',
+            type: 'datetime'
+        });
+
+        //模糊查询
+        form.on("submit(doSearch)", function (data) {
+            str.reload({
+                where: data.field,
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
             var data = obj.data;
-            if(obj.event === 'detail'){
-                layer.msg('ID：'+ data.id + ' 的查看操作');
-            } else if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
-                    obj.del();
+            console.log(data);
+            //console.log(obj)
+            if(obj.event === 'del'){
+                    deleteInfo(data);
+                    layer.close(index);
+            } else if(obj.event === 'edit'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.email
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
                     layer.close(index);
                 });
-            } else if(obj.event === 'edit'){
-                layer.alert('编辑行：<br>'+ JSON.stringify(data))
             }
         });
 
-        var $ = layui.$, active = {
-            getCheckData: function(){ //获取选中数据
-                var checkStatus = table.checkStatus('idTest')
-                    ,data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
-            }
-            ,getCheckLength: function(){ //获取选中数目
-                var checkStatus = table.checkStatus('idTest')
-                    ,data = checkStatus.data;
-                layer.msg('选中了：'+ data.length + ' 个');
-            }
-            ,isAll: function(){ //验证是否全选
-                var checkStatus = table.checkStatus('idTest');
-                layer.msg(checkStatus.isAll ? '全选': '未全选')
-            }
-        };
 
-        $('.demoTable .layui-btn').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
-    });
-</script>
-<script>
-    // 分页
-    layui.use(['laypage', 'layer'], function(){
-        var laypage = layui.laypage
-            ,layer = layui.layer;
-
-        //总页数低于页码总数
-        laypage.render({
-            elem: 'demo0'
-            ,count: 50 //数据总数
-        });
-
-        //总页数大于页码总数
-        laypage.render({
-            elem: 'demo1'
-            ,count: 70 //数据总数
-            ,jump: function(obj){
-                console.log(obj)
-            }
-        });
-
-        //自定义样式
-        laypage.render({
-            elem: 'demo2'
-            ,count: 100
-            ,theme: '#1E9FFF'
-        });
-        laypage.render({
-            elem: 'demo2-1'
-            ,count: 100
-            ,theme: '#FF5722'
-        });
-        laypage.render({
-            elem: 'demo2-2'
-            ,count: 100
-            ,theme: '#FFB800'
-        });
-
-        //自定义首页、尾页、上一页、下一页文本
-        laypage.render({
-            elem: 'demo3'
-            ,count: 100
-            ,first: '首页'
-            ,last: '尾页'
-            ,prev: '<em>←</em>'
-            ,next: '<em>→</em>'
-        });
-
-        //不显示首页尾页
-        laypage.render({
-            elem: 'demo4'
-            ,count: 100
-            ,first: false
-            ,last: false
-        });
-
-        //开启HASH
-        laypage.render({
-            elem: 'demo5'
-            ,count: 500
-            ,curr: location.hash.replace('#!fenye=', '') //获取hash值为fenye的当前页
-            ,hash: 'fenye' //自定义hash值
-        });
-
-        //只显示上一页、下一页
-        laypage.render({
-            elem: 'demo6'
-            ,count: 50
-            ,layout: ['prev', 'next']
-            ,jump: function(obj, first){
-                if(!first){
-                    layer.msg('第 '+ obj.curr +' 页');
-                }
-            }
-        });
-
-        //完整功能
-        laypage.render({
-            elem: 'demo7'
-            ,count: 100
-            ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-            ,jump: function(obj){
-                console.log(obj)
-            }
-        });
-
-        //自定义排版
-        laypage.render({
-            elem: 'demo8'
-            ,count: 1000
-            ,layout: ['limit', 'prev', 'page', 'next']
-        });
-        laypage.render({
-            elem: 'demo9'
-            ,count: 1000
-            ,layout: ['prev', 'next', 'page']
-        });
-        laypage.render({
-            elem: 'demo10'
-            ,count: 1000
-            ,layout: ['page', 'count']
-        });
-
-        //自定义每页条数的选择项
-        laypage.render({
-            elem: 'demo11'
-            ,count: 1000
-            ,limit: 100
-            ,limits: [100, 300, 500]
-        });
-
-
-        //将一段数组分页展示
-
-        //测试数据
-        var data = [
-            '北京',
-            '上海',
-            '广州',
-            '深圳',
-            '杭州',
-            '长沙',
-            '合肥',
-            '宁夏',
-            '成都',
-            '西安',
-            '南昌',
-            '上饶',
-            '沈阳',
-            '济南',
-            '厦门',
-            '福州',
-            '九江',
-            '宜春',
-            '赣州',
-            '宁波',
-            '绍兴',
-            '无锡',
-            '苏州',
-            '徐州',
-            '东莞',
-            '佛山',
-            '中山',
-            '成都',
-            '武汉',
-            '青岛',
-            '天津',
-            '重庆',
-            '南京',
-            '九江',
-            '香港',
-            '澳门',
-            '台北'
-        ];
-
-        //调用分页
-        laypage.render({
-            elem: 'demo20'
-            ,count: data.length
-            ,jump: function(obj){
-                //模拟渲染
-                document.getElementById('biuuu_city_list').innerHTML = function(){
-                    var arr = []
-                        ,thisData = data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
-                    layui.each(thisData, function(index, item){
-                        arr.push('<li>'+ item +'</li>');
-                    });
-                    return arr.join('');
-                }();
-            }
-        });
+        //删除
+        function deleteInfo(data){
+            layer.confirm('你确定要删除这条数据吗?', {icon: 3, title:'提示'}, function(index){
+                console.log(data.id);
+                $.post("/sys/login/deleteLoginfo",{id:data.id},function(res){
+                    if(res.code==200){
+                        str.reload();
+                    }
+                    layer.msg(res.msg);
+                })
+                layer.close(index);
+            });
+        }
 
     });
 </script>

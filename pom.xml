@@ -22,7 +22,7 @@
         <shiro.redis.version>2.4.2.1-RELEASE</shiro.redis.version>
         <shiro.freemarker.tags.version>0.1</shiro.freemarker.tags.version>
         <hutool.version>4.6.6</hutool.version>
-        <mybatisplus.version>3.2.0</mybatisplus.version>
+        <mybatisplus.version>3.1.0</mybatisplus.version>
         <lang3.version>3.8.1</lang3.version>
     </properties>
 
