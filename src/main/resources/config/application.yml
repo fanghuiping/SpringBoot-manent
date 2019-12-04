@@ -38,3 +38,10 @@ shiro:
   authc-ulrs:
     - /**
 
+swagger:
+  title: 仓库管理系统
+  description: 利用SpringBoot+layui+shiro
+  version: 1.0.0
+  name: 方慧平
+  url: localhost:8080
+  email: kkry100@qq.com

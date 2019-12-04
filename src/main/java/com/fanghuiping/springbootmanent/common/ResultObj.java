@@ -10,6 +10,8 @@ public class ResultObj {
     public static final ResultObj LOGIN_ERROR_CODE=new ResultObj(Constast.ERROR,"登录失败，验证码不正确");
     public static final ResultObj LOGLOGIN_DEL_SUCCESS = new ResultObj(Constast.OK,"删除成功");
     public static final ResultObj LOGLOGIN_DEL_ERROR = new ResultObj(Constast.ERROR,"删除失败");
+    public static final ResultObj LOGLOGIN_UPD_SUCCESS = new ResultObj(Constast.OK,"修改成功");
+    public static final ResultObj LOGLOGIN_UPD_ERROR = new ResultObj(Constast.ERROR,"修改失败");
 
     private Integer code;
     private String msg;

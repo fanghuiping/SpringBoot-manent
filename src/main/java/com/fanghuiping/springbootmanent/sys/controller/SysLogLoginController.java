@@ -9,12 +9,19 @@ import com.fanghuiping.springbootmanent.common.ResultObj;
 import com.fanghuiping.springbootmanent.sys.domain.SysLogLogin;
 import com.fanghuiping.springbootmanent.sys.service.ISysLogLoginService;
 import com.fanghuiping.springbootmanent.sys.vo.SysLogLoginVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>
@@ -25,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2019-12-01
  */
 @RestController
+@Api(value = "日志控制器")
 @RequestMapping("/sys/login")
 public class SysLogLoginController {
     @Autowired
@@ -37,9 +45,8 @@ public class SysLogLoginController {
      * @return
      */
     @RequestMapping("loadALLLogin")
+    @ApiOperation(value = "查询日志，默认显示全部日志")
     public DataGridView loadALLLogin(SysLogLoginVo loginVo) {
-        if (loginVo.getLimit() == null)
-            loginVo.setLimit(10);
         IPage<SysLogLogin> iPage = new Page<>(loginVo.getPage(), loginVo.getLimit());
         QueryWrapper<SysLogLogin> tWrapper = new QueryWrapper<>();
         tWrapper.like(StringUtils.isNotBlank(loginVo.getLoginname()), "loginname", loginVo.getLoginname());
@@ -52,6 +59,7 @@ public class SysLogLoginController {
     }
 
     @RequestMapping("deleteLoginfo")
+    @ApiOperation(value = "删除日志")
     public ResultObj deleteLoginfo(Integer id) {
         try {
             if (id == null)
@@ -64,6 +72,13 @@ public class SysLogLoginController {
         } catch (Exception e) {
             return ResultObj.LOGLOGIN_DEL_ERROR;
         }
+    }
+    @RequestMapping("updataLoginfo")
+    @ApiOperation(value = "编辑日志")
+    public ResultObj updataLoginfo(SysLogLoginVo sysLogLoginVo){
+        List<SysLogLogin> collection = new ArrayList<>();
+        collection.add(sysLogLoginVo);
+        return sysLogLoginService.saveOrUpdateBatch(collection)?ResultObj.LOGLOGIN_UPD_SUCCESS:ResultObj.LOGLOGIN_UPD_ERROR;
     }
 }
 

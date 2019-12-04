@@ -5,6 +5,8 @@ import com.fanghuiping.springbootmanent.common.ActiverUser;
 import com.fanghuiping.springbootmanent.common.ResultObj;
 import com.fanghuiping.springbootmanent.common.WebUtils;
 import com.fanghuiping.springbootmanent.sys.service.ISysUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -25,9 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2019-11-23
  */
 @RestController
+@Api(value = "登录控制器")
 public class SysUserController {
 
     @PostMapping("/login")
+    @ApiOperation("登录控制")
     public ResultObj list(String username, String pwd){
         Subject subject = SecurityUtils.getSubject();
         AuthenticationToken token = new UsernamePasswordToken(username,pwd);

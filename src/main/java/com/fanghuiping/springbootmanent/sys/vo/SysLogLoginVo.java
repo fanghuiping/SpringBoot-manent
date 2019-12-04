@@ -24,5 +24,4 @@ public class SysLogLoginVo extends SysLogLogin {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
-
 }

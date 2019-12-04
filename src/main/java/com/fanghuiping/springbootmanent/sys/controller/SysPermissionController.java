@@ -7,6 +7,8 @@ import com.fanghuiping.springbootmanent.sys.domain.SysPermission;
 import com.fanghuiping.springbootmanent.sys.domain.SysUser;
 import com.fanghuiping.springbootmanent.sys.service.ISysPermissionService;
 import com.fanghuiping.springbootmanent.sys.vo.SysPermissionVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,10 +26,12 @@ import java.util.List;
  * @since 2019-11-28
  */
 @RestController
+@Api(value = "目录")
 public class SysPermissionController {
     @Autowired
     ISysPermissionService permissionService;
 
+    @ApiOperation(value = "获取目录数据")
     @RequestMapping("navs")
     public DataGridView navs(SysPermissionVo permissionVo) {
         QueryWrapper<SysPermission> tWrapper = new QueryWrapper<>();

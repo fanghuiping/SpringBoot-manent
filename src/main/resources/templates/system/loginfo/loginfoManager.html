@@ -29,7 +29,7 @@
     <div class="layui-inline">
         <label class="layui-form-label">ip地址：</label>
         <div class="layui-input-inline">
-            <input type="text" name="limit" placeholder="登陆地址" autocomplete="off" class="layui-input">
+            <input type="text" name="loginip" placeholder="登陆地址" autocomplete="off" class="layui-input">
         </div>
     </div>
 
@@ -63,7 +63,7 @@
 <table class="layui-hide" id="test" lay-filter="test"></table>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" >查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -127,14 +127,17 @@
             return false;
         });
 
-        //监听行工具事件
+        // 监听行工具事件
+        // 删除日志
         table.on('tool(test)', function(obj){
             var data = obj.data;
             console.log(data);
             //console.log(obj)
-            if(obj.event === 'del'){
-                    deleteInfo(data);
-                    layer.close(index);
+            if(obj.event === 'del') {
+                deleteInfo(data);
+                layer.close(index);
+            } else if(obj.event === 'detail'){
+                detail(data);
             } else if(obj.event === 'edit'){
                 layer.prompt({
                     formType: 2
@@ -161,6 +164,11 @@
                 })
                 layer.close(index);
             });
+        }
+        // 查看
+        function detail(data) {
+            layer.msg("<span style='white-space:pre;'>"+'  ID： '+ data.id +
+                "  登录名  " + data.loginname+"</span>");
         }
 
     });
