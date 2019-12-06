@@ -29,6 +29,7 @@ shiro:
   hash-iterations: 2
   anon-urls:
     - /resource/**
+    - /swagger-ui.html*
     - /index.html*
     - /sys/login*
     - /login*

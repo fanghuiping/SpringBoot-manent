@@ -14,5 +14,4 @@ import java.util.List;
  * @since 2019-12-01
  */
 public interface ISysLogLoginService extends IService<SysLogLogin> {
-
 }

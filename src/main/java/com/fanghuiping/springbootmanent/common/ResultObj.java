@@ -12,6 +12,8 @@ public class ResultObj {
     public static final ResultObj LOGLOGIN_DEL_ERROR = new ResultObj(Constast.ERROR,"删除失败");
     public static final ResultObj LOGLOGIN_UPD_SUCCESS = new ResultObj(Constast.OK,"修改成功");
     public static final ResultObj LOGLOGIN_UPD_ERROR = new ResultObj(Constast.ERROR,"修改失败");
+    public static final ResultObj FIND_SUCCESS = new ResultObj(Constast.OK,"添加成功");
+    public static final ResultObj FIND_ERROR = new ResultObj(Constast.ERROR,"添加失败");
 
     private Integer code;
     private String msg;

@@ -5,6 +5,7 @@ import com.fanghuiping.springbootmanent.sys.domain.SysLogLogin;
 import com.fanghuiping.springbootmanent.sys.mapper.SysLogLoginMapper;
 import com.fanghuiping.springbootmanent.sys.service.ISysLogLoginService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
